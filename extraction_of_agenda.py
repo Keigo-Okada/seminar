@@ -11,12 +11,12 @@ df = pd.DataFrame(columns=['base','type_gian','noise','name_gian','end_word','ye
 result = []
 
 #フォルダー指定の方法(フォルダー→フォルダー→textファイルの順に指定)
-current_folder = "/Users/keigookada/Desktop/seminar/gijiroku/竹原市/"  # 現在のフォルダのパス
+current_folder = "/Users/keigookada/Downloads/光市/"  # 現在のフォルダのパス
 #フォルダー直下のフォルダー達を取得
 sub_folders = [f.path for f in os.scandir(current_folder) if f.is_dir()]
 
 #jsonファイルの読み込み
-with open("/Users/keigookada/Desktop/seminar/code/gian/gian.json", 'r',encoding='utf-8') as json_file:
+with open("/Users/keigookada/Desktop/seminar/code/agenda_py/gian.json", 'r',encoding='utf-8') as json_file:
   pattern = json.load(json_file)
 
 #全角数字を全て半角数字に変換する自作関数
@@ -38,9 +38,10 @@ for sub_folder in sub_folders:
             sys.exit()
                 
           #テキストファイルをstr型で取得
-          with open(file_path, "r",encoding = "utf-8") as f:
-            text = f.read()
+          f = open(file_path, "r",encoding = "utf-8")
+          text = f.read()
           print(file,'を実行中')
+          f.close
           #市町村コードと年をファイル名から取得
           year = int(file[:4])
           jiscode = str(file[8:13])
@@ -52,7 +53,7 @@ for sub_folder in sub_folders:
           #空白の削除
           tex = tex.replace("\u3000", "")
           tex = tex.replace("\n","")
-          print(tex)
+          #print(tex)
           #正規表現とのマッチング
           matches = re.findall(selected_pattern, tex)
           for inner_list in matches:
@@ -81,4 +82,4 @@ df_removed = df.drop_duplicates(subset=['num_gian', 'year'], keep='first')
 
 df_removed = df_removed.reset_index(drop=True)
 #print(df_removed)
-df_removed.to_csv("/Users/keigookada/Desktop/竹原.csv",encoding="cp932") #.csvの形式で絶対パスを使用
+df_removed.to_csv("/Users/keigookada/Desktop/光市.csv",encoding="cp932") #.csvの形式で絶対パスを使用
